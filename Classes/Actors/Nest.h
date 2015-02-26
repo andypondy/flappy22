@@ -1,7 +1,7 @@
 #ifndef __ACTOR_NEST__
 #define __ACTOR_NEST__
 
-#include <cocos2d.h>
+#include "cocos2d.h"
 #include "Actor.h"
 
 using namespace cocos2d;

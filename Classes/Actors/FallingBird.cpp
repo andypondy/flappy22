@@ -10,53 +10,70 @@ FallingBird::FallingBird(bool antiHero, float speed)
     this->baseName = (char *)malloc(sizeof("flappy_0"));
     strcpy(this->baseName, "flappy_0");
     
-    this->isReverse = antiHero;
+    this->antihero = antiHero;
     this->currentSpeed = speed;
     
     Actor::baseInit();
-    setScale(0.8, 0.8);
+    setScale(0.75, 0.75);
+    
+    auto flappyBody = PhysicsBody::createCircle( this->getContentSize().width / 2 );
+    
+    flappyBody->setCollisionBitmask( ACTOR_COLLISION_BITMASK );
+    flappyBody->setContactTestBitmask( ACTOR_COLLISION_BITMASK );
+    if (antiHero) {
+        flappyBody->setCategoryBitmask( ANTIHERO_COLLISION_BITMASK);
+    }
+    else {
+        flappyBody->setCategoryBitmask( OBSTACLE_COLLISION_BITMASK);
+    }
+    flappyBody->setGravityEnable(false);
+    
+    this->setPhysicsBody( flappyBody );
+    
+    this->scheduleUpdate();
 }
-/*
+
+void FallingBird::addCollider(Actor *hero) {
+    this->nest = hero;
+}
+
 void FallingBird::update(float delta)
 {
-    if (bird->status == isDead) return;
-    
-    if (getScore)
+    if (isCollision(this->nest))
     {
-        if (getWorldPosition().x <= bird->getPosition().x)
-        {
-            getScore = false; // count once for every time you pass the pipes
-            //            bird->updateScore();
+        if (!antihero) {
+            removeFromParentAndCleanup(true);
         }
     }
-    
-    if (isCollision())
+    else 
     {
-        bird->hitMe();
-        parent->removeFromParentAndCleanup(true);
+        // check if colliding with edge
+        Point pself = getWorldPosition();
+        if (pself.y - d <= LAND_HEIGHT) {
+            // crack
+            
+//            gameScene->gameOver();
+        }
     }
-
 }
 
-bool FallingBird::isCollision()
+bool FallingBird::isCollision(Sprite *a)
 {
-    CCSize spipe = parent->boundingBox().size;
-    CCPoint ppipe = getWorldPosition();
+    Size sself = this->boundingBox().size;
+    Point pself = getWorldPosition();
     
-    CCSize sbird = bird->boundingBox().size;
-    CCPoint pbird = bird->getPosition();
+    Size snest = a->boundingBox().size;
+    Point pnest = a->getPosition();
+        
+    float maxx1 = pself.x + sself.width/2 - d;
+    float minx1 = pself.x - sself.width/2 + d;
+    float maxy1 = pself.y + sself.height/2 - d;
+    float miny1 = pself.y - sself.height/2 + d;
     
-    float d = 7.0; //might have to fine tune this delta for precision contact
-    
-    float maxx1 = ppipe.x + spipe.width/2 - d;
-    float minx1 = ppipe.x - spipe.width/2 + d;
-    float maxy1 = ppipe.y + spipe.height/2 - d;
-    float miny1 = ppipe.y - spipe.height/2 + d;
-    
-    float maxx2 = pbird.x + sbird.width/2 - d;
-    float minx2 = pbird.x - sbird.width/2 + d;
-    float maxy2 = pbird.y + sbird.height/2 - d;
-    float miny2 = pbird.y - sbird.height/2 + d;
+    float maxx2 = pnest.x + snest.width/2 - d;
+    float minx2 = pnest.x - snest.width/2 + d;
+    float maxy2 = pnest.y + snest.height/2 - d;
+    float miny2 = pnest.y - snest.height/2 + d;
     
     return !(maxx1 < minx2 ||
              maxx2 < minx1 ||
@@ -65,8 +82,7 @@ bool FallingBird::isCollision()
     
 }
 
-CCPoint FallingBird::getWorldPosition()
+Point FallingBird::getWorldPosition()
 {
-    return ((CCParallaxNode*)parent->getParent())->convertToWorldSpace(parent->getPosition());
+    return ((ParallaxNode*)getParent())->convertToWorldSpace(getPosition());
 }
-*/

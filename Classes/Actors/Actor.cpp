@@ -13,6 +13,7 @@ Actor::Actor()
     
     strcpy(this->baseName, "nest_0");
     baseInit();
+    
 }
 
 void Actor::baseInit()
@@ -50,3 +51,7 @@ RepeatForever* Actor::animateActor()
     return repeat;
 }
 
+//void Actor::setGameScene(GameScene *s)
+//{
+//    this->gameScene = s;
+//}

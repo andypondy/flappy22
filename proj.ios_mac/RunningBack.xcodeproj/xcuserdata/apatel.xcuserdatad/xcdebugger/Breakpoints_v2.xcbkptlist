@@ -6,16 +6,48 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../Classes/Layers/InfiniteParallaxNode.cpp"
-            timestampString = "445367287.415154"
+            filePath = "../Classes/Scenes/GameScene.cpp"
+            timestampString = "446583035.898276"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "40"
-            endingLineNumber = "40"
-            landmarkName = "InfiniteParallaxNode::actionMoveTo(float dt)"
+            startingLineNumber = "222"
+            endingLineNumber = "222"
+            landmarkName = "GameScene::onContactBegin( cocos2d::PhysicsContact &amp;contact )"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../RunningBack/cocos2d/cocos/physics/CCPhysicsWorld.cpp"
+            timestampString = "446570485.793588"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "242"
+            endingLineNumber = "242"
+            landmarkName = "PhysicsWorld::collisionBeginCallback(PhysicsContact&amp; contact)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../RunningBack/cocos2d/cocos/physics/CCPhysicsWorld.cpp"
+            timestampString = "446572763.05548"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "115"
+            endingLineNumber = "115"
+            landmarkName = "PhysicsWorldCallback::collisionBeginCallbackFunc(cpArbiter *arb, struct cpSpace *space, PhysicsWorld *world)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +57,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../Classes/Scenes/GameScene.cpp"
-            timestampString = "445371367.087414"
+            filePath = "../Classes/Actors/FallingBird.cpp"
+            timestampString = "446583035.898276"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
-            landmarkName = "GameScene::addOpponent()"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
+            landmarkName = "FallingBird::update(float delta)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

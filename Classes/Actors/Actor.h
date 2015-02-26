@@ -1,7 +1,8 @@
 #ifndef __ACTOR_ACTOR__
 #define __ACTOR_ACTOR__
 
-#include <cocos2d.h>
+#include "cocos2d.h"
+//#include "GameScene.h"
 
 using namespace cocos2d;
 
@@ -10,10 +11,8 @@ class Actor : public Sprite
 public:
     Actor();
     
-//
-//    virtual void tapMe(); //
-//    virtual void hitMe(); //
-//    virtual void updateScore(); //
+//    void setGameScene(GameScene *s);
+
     
 private:
     RepeatForever* animateActor();
@@ -21,6 +20,8 @@ private:
 protected:
     void baseInit();
 
+//    GameScene *gameScene;
+    
     int score;
     int numFrames;
     char *baseName;

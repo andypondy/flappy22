@@ -26,6 +26,19 @@ void InfiniteParallaxNode::update(float dt)
     Point p = this->getPosition();
     actionMoveTo(dt);
 //    point(p);
+    
+    // remove offscreen children
+    Vector<Node*>& children = ((ParallaxNode*)this)->getChildren();
+    if (children.size() == 0) return;
+    for(auto child : this->getChildren())
+    {
+        Point cpos = this->convertToWorldSpace(child->getPosition());
+        if (cpos.x < -child->boundingBox().size.width)
+        {
+            log("remove child from parent");
+            child->removeFromParentAndCleanup(true);
+        }
+    }
 }
 
 void InfiniteParallaxNode::actionMove()

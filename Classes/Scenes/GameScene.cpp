@@ -28,10 +28,16 @@ bool GameScene::init()
         return false;
     }
     
-    s = Director::getInstance()->getWinSize();
+//    s = Director::getInstance()->getWinSize();
+    this->visibleSize    = Director::getInstance()->getVisibleSize();
+    this->origin         = Director::getInstance()->getVisibleOrigin();
     
     resetGame();
 
+    auto contactListener = EventListenerPhysicsContact::create( );
+    contactListener->onContactBegin = CC_CALLBACK_1( GameScene::onContactBegin, this );
+    Director::getInstance( )->getEventDispatcher( )->addEventListenerWithSceneGraphPriority( contactListener, this );
+    
     return true;
 }
 
@@ -40,14 +46,15 @@ void GameScene::resetGame()
     this->removeAllChildrenWithCleanup(true);
     unscheduleUpdate();
     
-    GameOver = false;
     isFirstTouchComplete = false;
     gameSpeed = 1;
+    score = 0;
     
     addBackground();
+    addEdges();
     addHero();
     addParallaxLayer();
-    
+    updateScore();
 }
 
 void GameScene::startGame() {
@@ -57,15 +64,30 @@ void GameScene::startGame() {
 void GameScene::addBackground()
 {
     Sprite* bg = Sprite::createWithSpriteFrameName("background.png");
-    bg->Node::setPosition(s.width/2, s.height/2);
+    bg->Node::setPosition(visibleSize.width/2, visibleSize.height/2);
     this->addChild(bg);
+}
+
+void GameScene::addEdges()
+{    
+    auto edgeBody = PhysicsBody::createEdgeBox( visibleSize, PHYSICSBODY_MATERIAL_DEFAULT, 3 );
+    edgeBody->setCollisionBitmask( OBSTACLE_COLLISION_BITMASK );
+    edgeBody->setContactTestBitmask( OBSTACLE_COLLISION_BITMASK );
+    edgeBody->setCategoryBitmask(LAND_COLLISION_BITMASK);
+    
+    auto edgeNode = Node::create();
+    edgeNode->setPosition( Point( visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y ) );
+    
+    edgeNode->setPhysicsBody( edgeBody );
+    
+    this->addChild( edgeNode );
 }
 
 void GameScene::addHero()
 {
     nest = new Nest();
     nest->setZOrder(1000); //front most
-    nest->CCNode::setPosition(s.width/2, s.height/3); // position on screen
+    nest->Node::setPosition(visibleSize.width/2, visibleSize.height/3); // position on screen
     
     this->addChild(nest);
 }
@@ -73,7 +95,7 @@ void GameScene::addHero()
 void GameScene::addParallaxLayer()
 {
     parallaxLayer = InfiniteParallaxNode::create();
-    parallaxLayer->setSize(s);
+    parallaxLayer->setSize(visibleSize);
     this->addChild(parallaxLayer);
 }
 
@@ -81,25 +103,21 @@ void GameScene::addOpponent()
 {
     
     FallingBird* opponent = new FallingBird(false, gameSpeed);
+    opponent->addCollider(nest);
 
-    int r = rand() % (int)(s.width/opponent->boundingBox().size.width*2);
+    int r = rand() % (int)(visibleSize.width/opponent->boundingBox().size.width*2);
 
     float dx = r * opponent->boundingBox().size.width/2 + opponent->boundingBox().size.width/2;
-    if ( dx > s.width) dx = s.width - opponent->boundingBox().size.width/2;
+    if ( dx > visibleSize.width) dx = visibleSize.width - opponent->boundingBox().size.width/2;
     
-    Point pos = Vec2(dx, s.height + opponent->boundingBox().size.height/2);
+    Point pos = Vec2(dx, visibleSize.height + opponent->boundingBox().size.height/2);
     //
 //    opponent->setPosition(parallaxLayer->convertToNodeSpace(pos));
     //
     opponent->setZOrder(2);
     
-//    opponent->addComponent(new Collision(bird, true)); //score for only when 1 of the pipe is crossed
     Point bgSpeed = Vec2(0.0, 1.0);
     parallaxLayer->addChild(opponent, 0, bgSpeed, parallaxLayer->convertToNodeSpace(pos));
-
-//    log("--------- after adding to parallax");
-//    point(parallaxLayer->getPosition());
-//    point(opponent->getPosition());
     
 }
 
@@ -111,12 +129,22 @@ void GameScene::levelUp()
 void GameScene::update(float delta)
 {
     nextOpponentInterval += delta;
-    if (nextOpponentInterval >= ktimeToAddOpponent/gameSpeed && !GameOver)
+    if (nextOpponentInterval >= ktimeToAddOpponent/gameSpeed)
     {
         nextOpponentInterval = 0;
         this->addOpponent();
-        levelUp();
     }
+}
+
+void GameScene::updateScore()
+{
+    levelUp();
+}
+
+void GameScene::gameOver()
+{
+    stopAllActions();
+    parallaxLayer->stopAllActions();
 }
 
 //-----------------------------
@@ -159,8 +187,8 @@ bool GameScene::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event)
     if ((loc.x - nest->boundingBox().size.width/2) < 0)
         loc.x = nest->boundingBox().size.width/2;
     else
-        if ((loc.x + nest->boundingBox().size.width/2) > s.width)
-            loc.x = s.width - nest->boundingBox().size.width/2;
+        if ((loc.x + nest->boundingBox().size.width/2) > visibleSize.width)
+            loc.x = visibleSize.width - nest->boundingBox().size.width/2;
 
     loc.y = nest->getPosition().y;
     
@@ -178,10 +206,26 @@ void GameScene::onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event)
     if ((loc.x - nest->boundingBox().size.width/2) < 0)
         loc.x = nest->boundingBox().size.width/2;
     else
-        if ((loc.x + nest->boundingBox().size.width/2) > s.width)
-            loc.x = s.width - nest->boundingBox().size.width/2;
+        if ((loc.x + nest->boundingBox().size.width/2) > visibleSize.width)
+            loc.x = visibleSize.width - nest->boundingBox().size.width/2;
     
     loc.y = nest->getPosition().y;
     nest->setPosition(loc);
+}
+
+bool GameScene::onContactBegin( cocos2d::PhysicsContact &contact )
+{
+    PhysicsBody *a = contact.getShapeA( )->getBody();
+    PhysicsBody *b = contact.getShapeB( )->getBody();
+    log("bang");
+    
+    if ( ( ACTOR_COLLISION_BITMASK == a->getCollisionBitmask( ) && OBSTACLE_COLLISION_BITMASK == b->getCollisionBitmask() ) || ( ACTOR_COLLISION_BITMASK == b->getCollisionBitmask( ) && OBSTACLE_COLLISION_BITMASK == a->getCollisionBitmask() ) )
+    {
+//        auto scene = GameOverScene::createScene( );
+//        
+//        Director::getInstance( )->replaceScene( TransitionFade::create( TRANSITION_TIME, scene ) );
+    }
+    
+    return true;
 }
 

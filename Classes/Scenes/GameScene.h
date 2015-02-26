@@ -19,8 +19,8 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(GameScene);
     
-    bool GameOver;
-    void updateUiScore();
+    void updateScore();
+    void gameOver();
     
     void playSound(std::string name);
     
@@ -31,8 +31,11 @@ private:
     
     virtual bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* event);
     virtual void onTouchMoved(cocos2d::Touch* touch, cocos2d::Event* event);
+    bool onContactBegin( cocos2d::PhysicsContact &contact );
     
-    cocos2d::Size s;
+    Size visibleSize;
+    Vec2 origin;
+    
     Nest *nest;
     InfiniteParallaxNode *parallaxLayer;
     bool isFirstTouchComplete;
@@ -42,11 +45,13 @@ private:
     void resetGame();
     void startGame();
     void addBackground();
+    void addEdges();
     void addHero();
     void addParallaxLayer();
     void addOpponent();
     void levelUp();
 
+    int score;
 protected:
     
 };
