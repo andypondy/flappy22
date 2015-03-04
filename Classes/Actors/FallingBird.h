@@ -12,6 +12,7 @@ public:
     FallingBird(bool antiHero, float speed);
 
     void addCollider(Actor *hero);
+    void splat();
     
 private:
     bool antihero;
@@ -22,6 +23,7 @@ private:
     Actor* nest;
 
     const float d = 20.0; //might have to fine tune this delta for precision contact
+    
 };
 
 

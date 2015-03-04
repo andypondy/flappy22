@@ -54,11 +54,17 @@ void GameScene::resetGame()
     addEdges();
     addHero();
     addParallaxLayer();
-    updateScore();
+    updateScoreUI();
 }
 
 void GameScene::startGame() {
     scheduleUpdate();
+}
+
+void GameScene::endGame()
+{
+    stopAllActions();
+    unscheduleUpdate();
 }
 
 void GameScene::addBackground()
@@ -96,13 +102,21 @@ void GameScene::addParallaxLayer()
 {
     parallaxLayer = InfiniteParallaxNode::create();
     parallaxLayer->setSize(visibleSize);
+    parallaxLayer->addHero(nest);
+    parallaxLayer->setGameScene(this);
     this->addChild(parallaxLayer);
 }
 
 void GameScene::addOpponent()
 {
     
-    FallingBird* opponent = new FallingBird(false, gameSpeed);
+    FallingBird* opponent = nullptr;
+    if (this->score == 5 || (this->score > 0 && (this->score) % 22 == 0)) {
+        opponent = new FallingBird(true, gameSpeed);
+    }
+    else {
+        opponent = new FallingBird(false, gameSpeed);
+    }
     opponent->addCollider(nest);
 
     int r = rand() % (int)(visibleSize.width/opponent->boundingBox().size.width*2);
@@ -124,12 +138,13 @@ void GameScene::addOpponent()
 void GameScene::levelUp()
 {
     gameSpeed += 0.01;
+    log("level up - new speed %f", gameSpeed);
 }
 
 void GameScene::update(float delta)
 {
     nextOpponentInterval += delta;
-    if (nextOpponentInterval >= ktimeToAddOpponent/gameSpeed)
+    if (nextOpponentInterval >= TIME_TO_ADD_NEXT_OPPONENT/gameSpeed)
     {
         nextOpponentInterval = 0;
         this->addOpponent();
@@ -138,13 +153,15 @@ void GameScene::update(float delta)
 
 void GameScene::updateScore()
 {
-    levelUp();
+    score++;
+    log("score %d", score);
+    if (score > 22)
+        levelUp();
 }
 
-void GameScene::gameOver()
+void GameScene::updateScoreUI()
 {
-    stopAllActions();
-    parallaxLayer->stopAllActions();
+
 }
 
 //-----------------------------

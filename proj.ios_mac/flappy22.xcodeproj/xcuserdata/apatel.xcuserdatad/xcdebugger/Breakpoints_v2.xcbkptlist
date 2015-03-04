@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../Classes/Scenes/GameScene.cpp"
-            timestampString = "446583035.898276"
+            timestampString = "447182375.634608"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "222"
-            endingLineNumber = "222"
+            startingLineNumber = "236"
+            endingLineNumber = "236"
             landmarkName = "GameScene::onContactBegin( cocos2d::PhysicsContact &amp;contact )"
             landmarkType = "5">
          </BreakpointContent>
@@ -48,22 +48,6 @@
             startingLineNumber = "115"
             endingLineNumber = "115"
             landmarkName = "PhysicsWorldCallback::collisionBeginCallbackFunc(cpArbiter *arb, struct cpSpace *space, PhysicsWorld *world)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../Classes/Actors/FallingBird.cpp"
-            timestampString = "446583035.898276"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "55"
-            endingLineNumber = "55"
-            landmarkName = "FallingBird::update(float delta)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

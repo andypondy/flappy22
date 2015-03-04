@@ -11,7 +11,8 @@
 
 #define COLLISION_BITMASK (ACTOR_COLLISION_BITMASK | OBSTACLE_COLLISION_BITMASK | LAND_COLLISION_BITMASK | ANTIHERO_COLLISION_BITMASK)
 
-#define LAND_HEIGHT 110
+#define LAND_HEIGHT 140
+#define AD_HEIGHT 50
 
 #define SoundTap "sfx_wing.mp3"
 #define SoundHit "sfx_hit.mp3"
@@ -24,7 +25,7 @@
 #define ANIMATION_TIME 0.05 //bird flap speed
 
 
-#define ktimeToAddOpponent 1 // time distance between each pipe
+#define TIME_TO_ADD_NEXT_OPPONENT 0.7 // time distance between each pipe
 
 #define point(p) \
 { \

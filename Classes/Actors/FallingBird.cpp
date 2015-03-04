@@ -1,14 +1,21 @@
 #include "FallingBird.h"
 #include "Definitions.h"
 #include "stealthSpriteFrameCache.h"
+#include "Nest.h"
 
 USING_NS_CC;
 
 FallingBird::FallingBird(bool antiHero, float speed)
 {
     this->numFrames = 2;
-    this->baseName = (char *)malloc(sizeof("flappy_0"));
-    strcpy(this->baseName, "flappy_0");
+    if (antiHero) {
+        this->baseName = (char *)malloc(sizeof("crow_0"));
+        strcpy(this->baseName, "crow_0");
+    }
+    else {
+        this->baseName = (char *)malloc(sizeof("flappy_0"));
+        strcpy(this->baseName, "flappy_0");
+    }
     
     this->antihero = antiHero;
     this->currentSpeed = speed;
@@ -39,22 +46,15 @@ void FallingBird::addCollider(Actor *hero) {
 
 void FallingBird::update(float delta)
 {
-    if (isCollision(this->nest))
-    {
-        if (!antihero) {
-            removeFromParentAndCleanup(true);
-        }
+    Point pself     = getWorldPosition();
+    Vec2 size       = Director::getInstance()->getVisibleSize();
+    float yPos      = (size.y - pself.y) / 150;
+    if (pself.y < size.y*1/3) {
+        yPos = (size.y*2/3) / 175;
     }
-    else 
-    {
-        // check if colliding with edge
-        Point pself = getWorldPosition();
-        if (pself.y - d <= LAND_HEIGHT) {
-            // crack
-            
-//            gameScene->gameOver();
-        }
-    }
+    float exp       = exp2f(yPos);
+    
+    this->setPositionY(this->getPositionY()-exp);
 }
 
 bool FallingBird::isCollision(Sprite *a)
@@ -86,3 +86,14 @@ Point FallingBird::getWorldPosition()
 {
     return ((ParallaxNode*)getParent())->convertToWorldSpace(getPosition());
 }
+
+void FallingBird::splat()
+{
+    // if anti hero then explode nest too
+    if (this->antihero) {
+        ((Nest*)this->nest)->explode();
+    }
+    else {
+    }
+}
+

@@ -2,8 +2,8 @@
 #define __GAME_SCENE_H__
 
 #include "cocos2d.h"
-#include "Nest.h"
 #include "InfiniteParallaxNode.h"
+#include "Nest.h"
 
 USING_NS_CC;
 
@@ -20,7 +20,7 @@ public:
     CREATE_FUNC(GameScene);
     
     void updateScore();
-    void gameOver();
+    void endGame();
     
     void playSound(std::string name);
     
@@ -50,6 +50,8 @@ private:
     void addParallaxLayer();
     void addOpponent();
     void levelUp();
+    void updateScoreUI();
+
 
     int score;
 protected:

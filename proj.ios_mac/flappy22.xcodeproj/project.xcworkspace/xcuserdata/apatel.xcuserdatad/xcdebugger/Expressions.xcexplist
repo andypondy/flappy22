@@ -3,6 +3,14 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "Nest::Nest():Nest.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "this-&gt;getContentSize( ).width">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "GameScene::addEdges():GameScene.cpp">
          <PersistentStrings>
             <PersistentString
@@ -14,18 +22,26 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "Nest::Nest():Nest.cpp">
-         <PersistentStrings>
-            <PersistentString
-               value = "this-&gt;getContentSize( ).width">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "FallingBird::FallingBird(bool, float):FallingBird.cpp">
          <PersistentStrings>
             <PersistentString
                value = "this-&gt;getContentSize().width">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "FallingBird::update(float):FallingBird.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "this-&gt;getPositionY()">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "GameScene::addOpponent():GameScene.cpp">
+         <PersistentStrings>
+            <PersistentString
+               value = "(this-&gt;score-17) % 22">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

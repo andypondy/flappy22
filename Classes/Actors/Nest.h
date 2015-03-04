@@ -10,7 +10,7 @@ class Nest : public Actor
 {
 public:
     Nest();
-
+    void explode();
 };
 
 

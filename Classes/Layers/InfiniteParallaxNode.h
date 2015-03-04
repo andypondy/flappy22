@@ -4,6 +4,8 @@
 #include "cocos2d.h"
 
 USING_NS_CC;
+class GameScene;
+class Actor;
 
 class InfiniteParallaxNode : public ParallaxNode
 {
@@ -17,16 +19,24 @@ public:
     void update(float dt);
     void setSize(Size size);
     void setSpeed(float speed);
+    bool isCollision(Sprite *a, Sprite *b); //collision or not
+    void addHero(Actor *hero);
+    void setGameScene(GameScene *s);
 
 private:
     void onEnter();
-    void actionMove();
     void actionMoveTo(float dt);
+    void endGame();
     
+    const float d = 20.0; //might have to fine tune this delta for precision contact
+    Actor* hero;
+    GameScene *gameScene;
+
 protected:
     float w,h;
     float initialSpeed, currentSpeed;
-
+    void visit(Renderer *renderer, const Mat4 &parentTransform, uint32_t parentFlags);
+    
 };
 
 

@@ -51,7 +51,3 @@ RepeatForever* Actor::animateActor()
     return repeat;
 }
 
-//void Actor::setGameScene(GameScene *s)
-//{
-//    this->gameScene = s;
-//}

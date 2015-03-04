@@ -19,3 +19,8 @@ Nest::Nest()
     
     this->setPhysicsBody( flappyBody );
 }
+
+void Nest::explode()
+{
+    
+}
